@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 const normalizeUrl = (value) => {
@@ -65,6 +65,21 @@ export default function Home() {
     };
   }, []);
 
+  const fetchBookmarks = useCallback(async () => {
+    if (missingEnv || !user) return;
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("bookmarks")
+      .select("id, title, url, created_at")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (!error) {
+      setBookmarks(data || []);
+    }
+    setLoading(false);
+  }, [missingEnv, user]);
+
   useEffect(() => {
     if (missingEnv) return;
     if (!user) {
@@ -73,22 +88,8 @@ export default function Home() {
       return;
     }
 
-    const fetchBookmarks = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("bookmarks")
-        .select("id, title, url, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-
-      if (!error) {
-        setBookmarks(data || []);
-      }
-      setLoading(false);
-    };
-
     fetchBookmarks();
-  }, [user?.id]);
+  }, [fetchBookmarks, missingEnv, user]);
 
   useEffect(() => {
     if (missingEnv) return undefined;
@@ -188,7 +189,13 @@ export default function Home() {
 
   const handleDelete = async (id) => {
     if (missingEnv) return;
-    await supabase.from("bookmarks").delete().eq("id", id);
+    setFormError("");
+    setBookmarks((prev) => prev.filter((item) => item.id !== id));
+    const { error } = await supabase.from("bookmarks").delete().eq("id", id);
+    if (error) {
+      setFormError(error.message);
+      fetchBookmarks();
+    }
   };
 
   const confirmDelete = async () => {
@@ -378,7 +385,6 @@ export default function Home() {
           </div>
         ) : null}
 
-         
       </div>
     </div>
   );
