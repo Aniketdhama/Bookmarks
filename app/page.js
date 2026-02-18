@@ -238,11 +238,10 @@ export default function Home() {
             Smart Bookmark App
           </p>
           <h1 className="text-3xl font-semibold md:text-4xl">
-            Save, sync, and revisit your best links.
+            Save once. Access anywhere.
           </h1>
           <p className="text-slate-300">
-            Private bookmarks, Google-only login, and real-time updates across
-            tabs.
+            Private bookmarks, Google-only login, and real-time updates
           </p>
         </header>
 
@@ -251,7 +250,7 @@ export default function Home() {
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-semibold">Sign in to continue</h2>
               <p className="text-sm text-slate-300">
-                Use Google OAuth to create your private bookmark list.
+                Use Google-only login
               </p>
             </div>
             <button className="btn-primary w-full md:w-fit" onClick={signInWithGoogle}>
