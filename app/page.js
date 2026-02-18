@@ -291,7 +291,7 @@ export default function Home() {
                   Title
                   <input
                     className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-base text-slate-100 placeholder:text-slate-500"
-                    placeholder="Design system inspiration"
+                    placeholder="enter short name "
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                     maxLength={120}
@@ -301,7 +301,7 @@ export default function Home() {
                   URL
                   <input
                     className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-base text-slate-100 placeholder:text-slate-500"
-                    placeholder="https://example.com"
+                    placeholder="enter url"
                     value={url}
                     onChange={(event) => setUrl(event.target.value)}
                   />
